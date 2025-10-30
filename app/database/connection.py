@@ -1,7 +1,5 @@
-from typing import Generator
-
 from sqlalchemy import create_engine
-from sqlalchemy.orm import Session, sessionmaker
+from sqlalchemy.orm import sessionmaker
 
 from app.config import settings
 
@@ -16,7 +14,7 @@ class DatabaseConnection:
         )
         self.SessionLocal = sessionmaker(bind=self.engine)
 
-    def get_session(self) -> Generator[Session, None, None]:
+    def get_session(self):
         session = self.SessionLocal()
         try:
             yield session
