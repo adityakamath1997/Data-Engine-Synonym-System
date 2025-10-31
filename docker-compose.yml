@@ -3,17 +3,24 @@ services:
     image: mcr.microsoft.com/mssql/server:2022-latest
     environment:
       ACCEPT_EULA: "Y"
-      SA_PASSWORD: "Pass@1234"
+      SA_PASSWORD: "Pass1234"
       MSSQL_PID: "Developer"
     ports:
       - "1433:1433"
     volumes:
       - sqlserver_data:/var/opt/mssql
+    healthcheck:
+      test: /opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P Pass1234 -Q "SELECT 1" -C || exit 1
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
 
   db-init:
     image: mcr.microsoft.com/mssql/server:2022-latest
     depends_on:
-      - sqlserver
+      sqlserver:
+        condition: service_healthy
     volumes:
       - ./init-db.sh:/init-db.sh
     entrypoint: /bin/bash
@@ -35,13 +42,13 @@ services:
       DATABASE_PORT: 1433
       DATABASE_NAME: synonymdb
       DATABASE_USER: sa
-      DATABASE_PASSWORD: Pass@1234
+      DATABASE_PASSWORD: Pass1234
       DATABASE_DRIVER: ODBC Driver 18 for SQL Server
       REDIS_HOST: redis
       REDIS_PORT: 6379
       REDIS_DB: 0
-      CACHE_STRATEGY: redis
-      CACHE_TTL: 20
+      CACHE_STRATEGY: memory
+      CACHE_TTL: 60
     depends_on:
       - sqlserver
       - redis
@@ -50,4 +57,3 @@ services:
 volumes:
   sqlserver_data:
   redis_data:
-

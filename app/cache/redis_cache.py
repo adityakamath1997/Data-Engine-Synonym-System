@@ -10,7 +10,10 @@ from app.config import settings
 class RedisCache(CacheStrategy):
     def __init__(self):
         self.redis = redis.Redis(
-            host=settings.redis_host, port=settings.redis_port, decode_responses=True
+            host=settings.redis_host,
+            port=settings.redis_port,
+            db=settings.redis_db,
+            decode_responses=True,
         )
 
     def get(self, key: str) -> Optional[Any]:

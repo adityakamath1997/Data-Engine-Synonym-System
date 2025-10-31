@@ -3,23 +3,16 @@ from sqlalchemy.orm import sessionmaker
 
 from app.config import settings
 
+engine = create_engine(
+    settings.database_url, pool_size=10, max_overflow=20, pool_pre_ping=True
+)
 
-class DatabaseConnection:
-    def __init__(self):
-        self.engine = create_engine(
-            settings.database_url,
-            pool_size=10,
-            max_overflow=20,
-            pool_pre_ping=True,
-        )
-        self.SessionLocal = sessionmaker(bind=self.engine)
-
-    def get_session(self):
-        session = self.SessionLocal()
-        try:
-            yield session
-        finally:
-            session.close()
+SessionLocal = sessionmaker(bind=engine)
 
 
-db_connection = DatabaseConnection()
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
