@@ -14,8 +14,15 @@ class Synonym(SQLModel, table=True):
     synonyms: str
 
 
+class CacheMetadata(BaseModel):
+    from_cache: bool
+    cache_source: Optional[str] = None
+    redis_host: Optional[str] = None
+    redis_port: Optional[int] = None
+
+
 class SynonymResponse(BaseModel):
     word_id: int
     word: str
     synonyms: str
-    from_cache: bool
+    cache_metadata: CacheMetadata
