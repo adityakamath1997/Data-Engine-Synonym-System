@@ -19,6 +19,21 @@ BEGIN
     ('sad', 'unhappy, sorrowful, dejected, melancholy, gloomy'),
     ('fast', 'quick, rapid, swift, speedy, hasty'),
     ('big', 'large, huge, enormous, massive, gigantic'),
-    ('small', 'tiny, little, minute, petite, compact');
+    ('small', 'tiny, little, minute, petite, compact'),
+    ('smart', 'intelligent, clever, bright, brilliant, wise'),
+    ('strong', 'powerful, robust, sturdy, mighty, tough'),
+    ('weak', 'feeble, frail, fragile, delicate, powerless'),
+    ('beautiful', 'pretty, attractive, gorgeous, lovely, stunning'),
+    ('ugly', 'unattractive, hideous, unsightly, grotesque, plain'),
+    ('brave', 'courageous, fearless, bold, valiant, heroic'),
+    ('scared', 'afraid, frightened, terrified, anxious, alarmed'),
+    ('angry', 'mad, furious, irate, enraged, livid'),
+    ('calm', 'peaceful, tranquil, serene, relaxed, composed'),
+    ('hot', 'warm, heated, burning, scorching, blazing'),
+    ('cold', 'chilly, freezing, icy, frigid, cool'),
+    ('new', 'fresh, recent, modern, novel, current'),
+    ('old', 'ancient, aged, antique, elderly, worn'),
+    ('easy', 'simple, effortless, straightforward, uncomplicated, basic'),
+    ('difficult', 'hard, challenging, tough, demanding, complex');
 END
 " -b
