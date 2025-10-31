@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import Any, Optional
+from typing import Any, Dict, Optional
 
 
 class CacheStrategy(ABC):
@@ -17,4 +17,8 @@ class CacheStrategy(ABC):
 
     @abstractmethod
     def exists(self, key: str) -> bool:
+        pass
+
+    @abstractmethod
+    def get_metadata(self) -> Dict[str, Any]:
         pass
