@@ -9,7 +9,7 @@ class Synonym(SQLModel, table=True):
 
     word_id: Optional[int] = Field(
         default=None, primary_key=True
-    )  # Database generates word_id automatically
+    )  # Since database generates word_id automatically
     word: str
     synonyms: str
 
