@@ -1,6 +1,11 @@
-from typing import Literal
+from enum import Enum
 
 from pydantic_settings import BaseSettings
+
+
+class CacheStrategy(str, Enum):
+    REDIS = "redis"
+    MEMORY = "memory"
 
 
 class Settings(BaseSettings):
@@ -15,7 +20,7 @@ class Settings(BaseSettings):
     redis_port: int
     redis_db: int
 
-    cache_strategy: Literal["redis", "memory"]
+    cache_strategy: CacheStrategy
     cache_ttl: int
 
     class Config:
