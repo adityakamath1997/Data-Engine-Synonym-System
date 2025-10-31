@@ -14,11 +14,15 @@ class Synonym(SQLModel, table=True):
     synonyms: str
 
 
-class CacheMetadata(BaseModel):
-    from_cache: bool
-    cache_source: Optional[str] = None
+class CacheInfo(BaseModel):
+    cache_source: str
     redis_host: Optional[str] = None
     redis_port: Optional[int] = None
+
+
+class CacheMetadata(BaseModel):
+    from_cache: bool
+    cache_info: Optional[CacheInfo] = None
 
 
 class SynonymResponse(BaseModel):

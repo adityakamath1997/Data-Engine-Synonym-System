@@ -5,6 +5,7 @@ import redis
 
 from app.cache.base import CacheStrategy
 from app.config import settings
+from app.models.synonym import CacheInfo
 
 
 class RedisCache(CacheStrategy):
@@ -15,6 +16,8 @@ class RedisCache(CacheStrategy):
             db=settings.redis_db,
             decode_responses=True,
         )
+        self.host = settings.redis_host
+        self.port = settings.redis_port
 
     def get(self, key: str) -> Optional[Any]:
         data = self.redis.get(key)
@@ -31,3 +34,10 @@ class RedisCache(CacheStrategy):
 
     def exists(self, key: str) -> bool:
         return self.redis.exists(key) > 0
+
+    def get_info(self) -> CacheInfo:
+        return CacheInfo(
+            cache_source="redis",
+            redis_host=self.host,
+            redis_port=self.port,
+        )

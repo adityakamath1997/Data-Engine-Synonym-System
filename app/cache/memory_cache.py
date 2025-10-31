@@ -3,6 +3,7 @@ from threading import Lock
 from typing import Any, Optional
 
 from app.cache.base import CacheStrategy
+from app.models.synonym import CacheInfo
 
 
 class MemoryCache(CacheStrategy):
@@ -44,3 +45,6 @@ class MemoryCache(CacheStrategy):
                 return False
 
             return True
+
+    def get_info(self) -> CacheInfo:
+        return CacheInfo(cache_source="memory")
