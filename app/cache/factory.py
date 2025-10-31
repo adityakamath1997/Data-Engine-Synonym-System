@@ -5,11 +5,16 @@ from app.config import CacheStrategy as CacheStrategyEnum
 from app.config import settings
 
 
-def get_cache() -> CacheStrategy:
-    if settings.cache_strategy == CacheStrategyEnum.REDIS:
-        return RedisCache()
+class CacheFactory:
+    _instance = None
 
-    if settings.cache_strategy == CacheStrategyEnum.MEMORY:
-        return MemoryCache()
-
-    raise ValueError(f"Unknown cache strategy: {settings.cache_strategy}")
+    @classmethod
+    def get_cache(cls) -> CacheStrategy:
+        if cls._instance is None:
+            if settings.cache_strategy == CacheStrategyEnum.REDIS:
+                cls._instance = RedisCache()
+            elif settings.cache_strategy == CacheStrategyEnum.MEMORY:
+                cls._instance = MemoryCache()
+            else:
+                raise ValueError(f"Unknown cache strategy: {settings.cache_strategy}")
+        return cls._instance
