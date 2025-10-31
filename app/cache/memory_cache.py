@@ -7,11 +7,14 @@ from app.models.synonym import CacheInfo
 
 
 class MemoryCache(CacheStrategy):
+    """Thread-safe in-memory cache using a dict."""
+
     def __init__(self):
         self._data = {}
         self._lock = Lock()
 
     def get(self, key: str) -> Optional[Any]:
+        """Get from cache, auto-deletes if expired."""
         with self._lock:
             if key not in self._data:
                 return None
@@ -25,15 +28,18 @@ class MemoryCache(CacheStrategy):
             return value
 
     def set(self, key: str, value: Any, ttl: int) -> None:
+        """Store with TTL in seconds. Calculates expiration before locking."""
         expires_at = time.time() + ttl
         with self._lock:
             self._data[key] = (value, expires_at)
 
     def delete(self, key: str) -> None:
+        """Remove key, safe if it doesn't exist."""
         with self._lock:
             self._data.pop(key, None)
 
     def exists(self, key: str) -> bool:
+        """Check if key exists and is still valid."""
         with self._lock:
             if key not in self._data:
                 return False

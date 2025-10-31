@@ -4,11 +4,15 @@ from pydantic_settings import BaseSettings
 
 
 class CacheStrategy(str, Enum):
+    """Available caching strategies."""
+
     REDIS = "redis"
     MEMORY = "memory"
 
 
 class Settings(BaseSettings):
+    """App config loaded from environment variables."""
+
     database_server: str
     database_port: int
     database_name: str
@@ -28,6 +32,7 @@ class Settings(BaseSettings):
 
     @property
     def database_url(self):
+        """Builds the SQLAlchemy connection URL for SQL Server."""
         driver = self.database_driver.replace(" ", "+")
         return (
             f"mssql+pyodbc://{self.database_user}:{self.database_password}"

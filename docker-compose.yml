@@ -49,12 +49,23 @@ services:
       REDIS_HOST: redis
       REDIS_PORT: 6379
       REDIS_DB: 0
-      CACHE_STRATEGY: redis
+      CACHE_STRATEGY: memory
       CACHE_TTL: 25
     depends_on:
       - sqlserver
       - redis
       - db-init
+
+  streamlit:
+    build:
+      context: .
+      dockerfile: Dockerfile.streamlit
+    ports:
+      - "8501:8501"
+    depends_on:
+      - app
+    environment:
+      - STREAMLIT_SERVER_HEADLESS=true
 
 volumes:
   sqlserver_data:
