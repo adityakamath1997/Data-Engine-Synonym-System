@@ -8,11 +8,14 @@ from app.config import settings
 
 
 class CacheFactory:
+    """Singleton factory for creating cache instances based on config."""
+
     _instance = None
     _lock = Lock()
 
     @classmethod
     def get_cache(cls) -> CacheStrategy:
+        """Returns the configured cache instance."""
         if cls._instance is None:
             with cls._lock:
                 if cls._instance is None:
