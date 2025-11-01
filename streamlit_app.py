@@ -84,7 +84,7 @@ def main():
                 from_cache = cache_metadata.get("from_cache", False)
                 cache_info = cache_metadata.get("cache_info")
 
-                metric_col1, metric_col2, metric_col3 = st.columns(3)
+                metric_col1, metric_col2, metric_col3, metric_col4 = st.columns(4)
 
                 with metric_col1:
                     cache_status = "HIT" if from_cache else "MISS"
@@ -97,6 +97,10 @@ def main():
                         st.metric("Cache Source", source)
 
                 with metric_col3:
+                    response_time = cache_metadata.get("response_time_ms", 0)
+                    st.metric("Response Time", f"{response_time:.2f}ms")
+
+                with metric_col4:
                     st.metric("Records Retrieved", len(data))
 
                 if not from_cache:
