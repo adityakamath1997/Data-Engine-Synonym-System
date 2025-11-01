@@ -78,8 +78,16 @@ def test_cache_behavior_with_ttl():
     data4 = response4.json()
     assert data4[0]["cache_metadata"]["from_cache"] is True
 
-    # Verify data consistency across cache hits
-    assert data2 == data3 == data4
+    # Verify data consistency across cache hits (excluding timing which varies)
+    for d2, d3, d4 in zip(data2, data3, data4):
+        assert d2["word_id"] == d3["word_id"] == d4["word_id"]
+        assert d2["word"] == d3["word"] == d4["word"]
+        assert d2["synonyms"] == d3["synonyms"] == d4["synonyms"]
+        assert (
+            d2["cache_metadata"]["from_cache"]
+            == d3["cache_metadata"]["from_cache"]
+            == d4["cache_metadata"]["from_cache"]
+        )
 
     print("\n[TEST] Sleeping for 26 seconds to let cache expire (TTL=25s)...")
     time.sleep(26)
