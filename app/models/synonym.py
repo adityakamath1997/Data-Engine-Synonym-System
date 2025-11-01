@@ -27,6 +27,7 @@ class CacheMetadata(BaseModel):
 
     from_cache: bool
     cache_info: Optional[CacheInfo] = None
+    response_time_ms: float
 
 
 class SynonymResponse(BaseModel):

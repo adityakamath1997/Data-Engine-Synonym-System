@@ -26,6 +26,6 @@ class CacheStrategy(ABC):
         pass
 
     @abstractmethod
-    def get_info(self):
+    def get_info(self) -> Any:
         """Return metadata about the cache backend."""
         pass

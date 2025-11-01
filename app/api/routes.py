@@ -13,7 +13,7 @@ router = APIRouter()
 
 @router.get("/info")
 def get_info():
-    """Returns cache config (strategy and TTL)."""
+    """Returns cache config"""
     return {
         "cache_strategy": settings.cache_strategy.value,
         "cache_ttl_seconds": settings.cache_ttl,

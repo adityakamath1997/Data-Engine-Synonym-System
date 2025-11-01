@@ -103,7 +103,7 @@ def test_synonyms_endpoint_returns_all_records(client):
     assert response.status_code == 200
     data = response.json()
 
-    # Should have exactly 20 records, as dfeined in init-db.sh
+    # Should have exactly 20 records, as defined in init-db.sh
     assert len(data) == 20
 
     # Verify word_ids are unique

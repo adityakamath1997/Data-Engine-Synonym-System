@@ -56,7 +56,8 @@ def main():
 
     with col2:
         if st.session_state.last_miss_time:
-            ttl_seconds = 25
+            # Get TTL from API config instead of hardcoding
+            ttl_seconds = info.get("cache_ttl_seconds", 25) if info else 25
             elapsed = (datetime.now() - st.session_state.last_miss_time).total_seconds()
             remaining = max(0, ttl_seconds - elapsed)
 

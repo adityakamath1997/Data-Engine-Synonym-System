@@ -8,16 +8,21 @@ from app.config import settings
 
 
 class CacheFactory:
-    """Singleton factory for creating cache instances based on config."""
+    """
+    Singleton factory for creating cache instances.
+
+    The cache strategy is determined by the CACHE_STRATEGY environment variable.
+    """
 
     _instance = None
     _lock = Lock()
 
     @classmethod
     def get_cache(cls) -> CacheStrategy:
-        """Returns the configured cache instance."""
+        """Returns the configured cache instance (Redis or Memory)."""
         if cls._instance is None:
             with cls._lock:
+                # Double-check to avoid race conditions
                 if cls._instance is None:
                     if settings.cache_strategy == CacheStrategyEnum.REDIS:
                         cls._instance = RedisCache()

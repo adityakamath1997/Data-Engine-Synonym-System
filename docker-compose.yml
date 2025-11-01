@@ -3,6 +3,7 @@ services:
     image: mcr.microsoft.com/mssql/server:2022-latest
     environment:
       ACCEPT_EULA: "Y"
+      # NOTE: Weak password for development only. Use secrets manager in production.
       SA_PASSWORD: "Pass1234"
       MSSQL_PID: "Developer"
     ports:
@@ -49,7 +50,7 @@ services:
       REDIS_HOST: redis
       REDIS_PORT: 6379
       REDIS_DB: 0
-      CACHE_STRATEGY: memory
+      CACHE_STRATEGY: redis
       CACHE_TTL: 25
     depends_on:
       - sqlserver

@@ -28,7 +28,12 @@ class SynonymService:
         cache_info = self.cache.get_info()
         cache_source = cache_info.cache_source.upper()
 
-        cached = self.cache.get(cache_key)
+        # Try cache first, but fall back to DB if it fails
+        cached = None
+        try:
+            cached = self.cache.get(cache_key)
+        except Exception as e:
+            logger.warning(f"Cache get failed: {e}")
 
         if cached:
             elapsed = (time.time() - start) * 1000
@@ -37,7 +42,9 @@ class SynonymService:
                 f"Retrieved from cache in {Fore.CYAN}{elapsed:.2f}ms{Style.RESET_ALL}"
             )
 
-            metadata = CacheMetadata(from_cache=True, cache_info=cache_info)
+            metadata = CacheMetadata(
+                from_cache=True, cache_info=cache_info, response_time_ms=elapsed
+            )
             return [SynonymResponse(**item, cache_metadata=metadata) for item in cached]
 
         logger.info(
@@ -57,7 +64,11 @@ class SynonymService:
             for s in synonyms
         ]
 
-        self.cache.set(cache_key, data, settings.cache_ttl)
+        # Try to cache for next time, but don't fail the request if caching fails
+        try:
+            self.cache.set(cache_key, data, settings.cache_ttl)
+        except Exception as e:
+            logger.warning(f"Cache set failed: {e}")
 
         elapsed = (time.time() - start) * 1000
         logger.info(
@@ -65,5 +76,5 @@ class SynonymService:
             f"Retrieved from database in {Fore.CYAN}{elapsed:.2f}ms{Style.RESET_ALL}"
         )
 
-        metadata = CacheMetadata(from_cache=False)
+        metadata = CacheMetadata(from_cache=False, response_time_ms=elapsed)
         return [SynonymResponse(**item, cache_metadata=metadata) for item in data]

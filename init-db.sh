@@ -4,7 +4,7 @@ sleep 30
 # Create the database if it doesn't exist
 /opt/mssql-tools18/bin/sqlcmd -S sqlserver -U sa -P "Pass1234" -C -Q "IF NOT EXISTS (SELECT * FROM sys.databases WHERE name = 'synonymdb') CREATE DATABASE synonymdb;" -b
 
-# Create table and insert test data if it doesnt' exist
+# Create table and insert test data if it doesn't exist
 /opt/mssql-tools18/bin/sqlcmd -S sqlserver -U sa -P "Pass1234" -C -d synonymdb -Q "
 IF NOT EXISTS (SELECT * FROM sys.tables WHERE name = 'synonyms')
 BEGIN
